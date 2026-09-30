@@ -5,14 +5,12 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class OrderDB {
-	
 	private int numLines;
 	private Order[] orderArray;
 	
 	public void loadOrders(String fileName){
 		File orders = new File(fileName);
 		int index;
-		Order name = new Order();
 		
 		try {
 			Scanner scanner = new Scanner(orders);
@@ -20,43 +18,53 @@ public class OrderDB {
 			while(scanner.hasNextLine()) {
 				line = scanner.nextLine();
 				numLines++;
+				
 			}
 			scanner.close();
 		}
 		catch (FileNotFoundException n) {
 			System.out.print("Loser");
 		}
+		orderArray = new Order[numLines];
 		
 		
 		
 		try {
 			Scanner scanner = new Scanner(orders);
 			String line = scanner.nextLine();
-			int index1 = 0;
+			String id = "";
+			String pro = "";
+			String amount = "";
+			int place = 0;
 			
-			orderArray = new Order[numLines];
-			
-			 while(scanner.hasNextLine()) {
+			while(scanner.hasNextLine()) {
 				line = scanner.nextLine();
-				String id = "";
-				String product = "";
-				String amount = "";
 				
-				
-				String[] temp = line.split(",");
-				
-				if(index1 == 0) {
-					id = temp[numLines];
-				}
-				else if(index1 == 2) {
-					 product = temp[numLines];
-				}
-				else if(index1 == 3){
-					amount = temp[numLines];
-				}
+				int placeHolder = 0;
+				String temp = "";
+				for (index = 0; index<line.length();index++) {
+					if (line.charAt(index) != ',') {
+						temp += line.charAt(index);
+					}
+					else {
+						if (placeHolder == 0) {
+							id = temp;
+						}
+						else if (placeHolder == 2) {
+							pro = temp;
+						}
+						else if (placeHolder == 3) {
+							amount = temp;
+						}
+						temp = "";
+						placeHolder++;
+					}
 					
-			orderArray[index1] = Order( id, product, amount);
-				index1++;
+				}
+				orderArray[place] = new Order(id, pro, amount);
+				place++;
+				
+				
 			}
 			scanner.close();
 		}
@@ -66,40 +74,18 @@ public class OrderDB {
 		
 		
 		
+		
 		}
-		
-		
-			//for (Order index2 : orderArray) {
-				//if (index2 != null) {
-					//System.out.print(index2.getID() + " " + index2.getName() + " " + index2.getProduct());
-				//}
-			//}
-		
-		
-		
-		//try {
-			//Scanner scanner = new Scanner(orders);
-			//String line = scanner.nextLine();
-			
-			//while (scanner.hasNextLine()) {
-				//line = scanner.nextLine();
-				
-			//}
-			
-			//scanner.close();
-			
-		//}
-		//catch (FileNotFoundException nf) {
-			//System.out.print("Loser");
-		//}
 		
 
 
 	public void showOrders() {
-		int index;
-		for(index = 0; index < orderArray.length; index++) {
-			System.out.println(orderArray[index].getID());
-		}
+		System.out.printf("Order ID Product\t\t\tTotal Amt\n");
+		System.out.printf("-------- -------\t\t\t---------\n");
+		
+		for (Order pl : orderArray) {
+			System.out.printf("%-7s%-34s%s\n", pl.getID(), pl.getProduct(),pl.getAmount());
+			}
 		
 	}
 }

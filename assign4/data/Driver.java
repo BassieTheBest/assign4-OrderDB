@@ -6,8 +6,7 @@ public class Driver {
 		
 		OrderDB attemp = new OrderDB();
 		attemp.loadOrders("orders.txt");
-		
-		Order item = new Order();
+		attemp.showOrders();
 		
 		
 	}
